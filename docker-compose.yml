@@ -1,0 +1,206 @@
+version: '3.9'
+services:
+  # eth_goerli:
+  #   image: ethereum/client-go:alltools-v1.10.15
+  #   restart: on-failure
+  #   ports:
+  #     - "30303:30303"
+  #     - "30303:30303/udp"
+  #     - "127.0.0.1:8545:8545"
+  #     - "127.0.0.1:8546:8546"
+  #   volumes:
+  #     - ./.goerli/:/root
+  #   command: >
+  #     sh -c "
+  #       geth \
+  #         --goerli \
+  #         --syncmode full \
+  #         --http \
+  #         --http.api 'admin,eth,net,web3' \
+  #         --http.vhosts 'localhost,host.docker.internal' \
+  #         --http.port 8545 \
+  #         --http.addr 0.0.0.0 \
+  #         --http.corsdomain '*' \
+  #         --ws \
+  #         --ws.addr 0.0.0.0 \
+  #         --ws.port 8546 \
+  #         --ws.origins '*' \
+  #         --graphql \
+  #         --graphql.corsdomain '*' \
+  #         --ipcpath /root/ipc
+  #         console
+  #     "
+
+  eth_private_node1:
+    hostname: node1
+    image: ethereum/client-go:alltools-v1.10.15
+    restart: on-failure
+    # ports:
+      # - "30303:30303"
+      # - "30303:30303/udp"
+      # - "127.0.0.1:8547:8545"
+      # - "127.0.0.1:8548:8546"
+    working_dir: /root
+    volumes:
+      - ./.private/:/root
+      - ./src:/root/src:ro
+      - ./src/node1/keystore:/root/node1/keystore:ro
+      - ./src/static-nodes.json:/root/node1/static-nodes.json:ro
+    networks:
+      private:
+        ipv4_address: 10.1.0.1
+    command: >
+      sh -c "
+        geth \
+          --datadir node1 \
+          --networkid 1122 \
+          --nousb \
+          --syncmode full \
+          --port 30303 \
+          --gcmode archive \
+          --mine \
+          --miner.gasprice 0 \
+          --miner.gastarget 470000000000 \
+          --http \
+          --http.api 'admin,eth,net,web3' \
+          --http.vhosts 'localhost,host.docker.internal' \
+          --http.port 8545 \
+          --http.addr 0.0.0.0 \
+          --http.corsdomain '*' \
+          --ws \
+          --ws.addr 0.0.0.0 \
+          --ws.port 8546 \
+          --ws.origins '*' \
+          --graphql \
+          --graphql.corsdomain '*' \
+          --ipcpath /root/node1/ipc \
+          --unlock "0xc52c86c964f1afe1bbd6bf65787f4ef8105f2b6d" \
+          --password /root/src/private_key \
+          --allow-insecure-unlock \
+          --verbosity 3 \
+          --nodekey /root/src/node1/geth/nodekey
+      "
+
+  eth_private_node2:
+    hostname: node2
+    image: ethereum/client-go:alltools-v1.10.15
+    restart: on-failure
+    depends_on:
+        - eth_private_node1
+    ports:
+      # - "30303:30303"
+      # - "30303:30303/udp"
+      - "127.0.0.1:8547:8545"
+      - "127.0.0.1:8548:8546"
+    working_dir: /root
+    volumes:
+      - ./.private/:/root
+      - ./src:/root/src:ro
+      - ./src/node2/keystore:/root/node2/keystore:ro
+      - ./src/static-nodes.json:/root/node2/static-nodes.json:ro
+    networks:
+      private:
+        ipv4_address: 10.1.0.2
+    command: >
+      sh -c "
+        geth \
+          --datadir node2 \
+          --networkid 1122 \
+          --nousb \
+          --syncmode full \
+          --port 30303 \
+          --gcmode archive \
+          --mine \
+          --miner.gasprice 0 \
+          --miner.gastarget 470000000000 \
+          --http \
+          --http.api 'admin,eth,net,web3' \
+          --http.vhosts 'localhost,host.docker.internal' \
+          --http.port 8545 \
+          --http.addr 0.0.0.0 \
+          --http.corsdomain '*' \
+          --ws \
+          --ws.addr 0.0.0.0 \
+          --ws.port 8546 \
+          --ws.origins '*' \
+          --graphql \
+          --graphql.corsdomain '*' \
+          --ipcpath /root/node2/ipc \
+          --unlock "0x41cec578f54bdd7d67d5f8cac81f537553164e5c" \
+          --password /root/src/private_key \
+          --allow-insecure-unlock \
+          --verbosity 3 \
+          --nodekey /root/src/node2/geth/nodekey
+      "
+
+  eth_private_node3:
+    hostname: node3
+    image: ethereum/client-go:alltools-v1.10.15
+    restart: on-failure
+    depends_on:
+        - eth_private_node1
+    # ports:
+      # - "30303:30303"
+      # - "30303:30303/udp"
+      # - "127.0.0.1:8547:8545"
+      # - "127.0.0.1:8548:8546"
+    working_dir: /root
+    volumes:
+      - ./.private/:/root
+      - ./src:/root/src:ro
+      - ./src/node3/keystore:/root/node3/keystore:ro
+      - ./src/static-nodes.json:/root/node3/static-nodes.json:ro
+    networks:
+      private:
+        ipv4_address: 10.1.0.3
+    command: >
+      sh -c "
+        geth \
+          --datadir node3 \
+          --networkid 1122 \
+          --nousb \
+          --syncmode full \
+          --port 30303 \
+          --gcmode archive \
+          --mine \
+          --miner.gasprice 0 \
+          --miner.gastarget 470000000000 \
+          --http \
+          --http.api 'admin,eth,net,web3' \
+          --http.vhosts 'localhost,host.docker.internal' \
+          --http.port 8545 \
+          --http.addr 0.0.0.0 \
+          --http.corsdomain '*' \
+          --ws \
+          --ws.addr 0.0.0.0 \
+          --ws.port 8546 \
+          --ws.origins '*' \
+          --graphql \
+          --graphql.corsdomain '*' \
+          --ipcpath /root/node2/ipc \
+          --unlock "0xdc6217bea0c0dc41ebba2dffabe6f4f4324a4965" \
+          --password /root/src/private_key \
+          --allow-insecure-unlock \
+          --verbosity 3 \
+          --nodekey /root/src/node3/geth/nodekey
+      "
+
+networks:
+  private:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.1.0.0/24
+         gateway: 10.1.0.254
+
+  # netstats:
+  #   build: eth-netstats
+  #   restart: on-failure
+  #   container_name: netstats
+  #   environment:
+  #     - WS_SECRET=eth-net-stats-secret
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #   ports:
+  #     - "3000:3000"
+  #   command: "geth --goerli"

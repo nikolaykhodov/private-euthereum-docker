@@ -1,0 +1,12 @@
+{
+  "name": "ethereum-docker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+  	"docker:goerli": "docker run --rm -it -v $(pwd)/.goerli:/root ethereum/client-go:alltools-v1.10.15",
+  	"docker:private": "docker run --rm -it -v $(pwd)/.private:/root -v $(pwd)/src:/root/src:ro --workdir=/root ethereum/client-go:alltools-v1.10.15",
+  	"goerli:attach": "npm run docker geth attach http://host.docker.internal:8545",
+  	"private:attach": "npm run docker:private geth attach http://host.docker.internal:8547"
+  }
+}
