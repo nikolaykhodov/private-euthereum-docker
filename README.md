@@ -1,6 +1,6 @@
 ## Overview
 
-It is a zero-click Ethereum (Proof-of-Authority) setup with three nodes.
+It is a zero-config Ethereum (Proof-of-Authority) setup with three nodes.
 
 
 ## Features
