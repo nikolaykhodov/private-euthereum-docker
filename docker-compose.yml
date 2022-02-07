@@ -18,7 +18,7 @@ services:
     image: ethereum/client-go:alltools-v1.10.15
     restart: on-failure
     depends_on:
-        - eth_private_node1
+        - node1
     ports:
       - "127.0.0.1:8545:8545"
       - "127.0.0.1:8546:8546"
@@ -36,7 +36,7 @@ services:
     image: ethereum/client-go:alltools-v1.10.15
     restart: on-failure
     depends_on:
-        - eth_private_node1
+        - node1
     working_dir: /root
     volumes:
       - ./.private/:/root
