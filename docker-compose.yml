@@ -1,37 +1,6 @@
 version: '3.9'
 services:
-  # eth_goerli:
-  #   image: ethereum/client-go:alltools-v1.10.15
-  #   restart: on-failure
-  #   ports:
-  #     - "30303:30303"
-  #     - "30303:30303/udp"
-  #     - "127.0.0.1:8545:8545"
-  #     - "127.0.0.1:8546:8546"
-  #   volumes:
-  #     - ./.goerli/:/root
-  #   command: >
-  #     sh -c "
-  #       geth \
-  #         --goerli \
-  #         --syncmode full \
-  #         --http \
-  #         --http.api 'admin,eth,net,web3' \
-  #         --http.vhosts 'localhost,host.docker.internal' \
-  #         --http.port 8545 \
-  #         --http.addr 0.0.0.0 \
-  #         --http.corsdomain '*' \
-  #         --ws \
-  #         --ws.addr 0.0.0.0 \
-  #         --ws.port 8546 \
-  #         --ws.origins '*' \
-  #         --graphql \
-  #         --graphql.corsdomain '*' \
-  #         --ipcpath /root/ipc
-  #         console
-  #     "
-
-  eth_private_node1:
+  node1:
     hostname: node1
     image: ethereum/client-go:alltools-v1.10.15
     restart: on-failure
@@ -44,7 +13,7 @@ services:
         ipv4_address: 10.1.0.1
     command: /root/src/start_geth.sh node1 10.1.0.1
 
-  eth_private_node2:
+  node2:
     hostname: node2
     image: ethereum/client-go:alltools-v1.10.15
     restart: on-failure
@@ -62,7 +31,7 @@ services:
         ipv4_address: 10.1.0.2
     command: /root/src/start_geth.sh node2 10.1.0.2
 
-  eth_private_node3:
+  node3:
     hostname: node3
     image: ethereum/client-go:alltools-v1.10.15
     restart: on-failure
@@ -84,15 +53,3 @@ networks:
      config:
        - subnet: 10.1.0.0/24
          gateway: 10.1.0.254
-
-  # netstats:
-  #   build: eth-netstats
-  #   restart: on-failure
-  #   container_name: netstats
-  #   environment:
-  #     - WS_SECRET=eth-net-stats-secret
-  #   volumes:
-  #     - /etc/localtime:/etc/localtime:ro
-  #   ports:
-  #     - "3000:3000"
-  #   command: "geth --goerli"
