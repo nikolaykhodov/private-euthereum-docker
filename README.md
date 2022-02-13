@@ -26,7 +26,7 @@ Three wallets:
 - `41cec578f54bdd7d67d5f8cac81f537553164e5c` (`node2`)
 - `0xdc6217bea0c0dc41ebba2dffabe6f4f4324a4965` (`node3`)
 
-have initial balances and authorities for 
+have initial balances and authorities. 
 
 ### Nodes
 
