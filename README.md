@@ -15,7 +15,7 @@ docker compose up
 
 ### API & Networking
 
-- A RPC server of the 2nd node is available at http://localhost:8545 
+- An RPC server of the 2nd node is available at http://localhost:8545 
 - No any other service is exposed
 
 ### Genesis
